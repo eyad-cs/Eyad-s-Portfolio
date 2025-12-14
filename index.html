@@ -18,6 +18,7 @@
       --bg-lighter: #1a1a1a;
       --accent: #00d9ff;
       --accent-dim: #008fb3;
+      --accent-glow: rgba(0, 217, 255, 0.2);
       --text-primary: #ffffff;
       --text-secondary: #b3b3b3;
       --text-dim: #808080;
@@ -34,6 +35,62 @@
       color: var(--text-primary);
       line-height: 1.6;
       overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated Background Grid */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(42, 42, 42, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(42, 42, 42, 0.3) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Gradient Orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb-1 {
+      width: 500px;
+      height: 500px;
+      background: var(--accent);
+      top: -200px;
+      right: -200px;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .orb-2 {
+      width: 400px;
+      height: 400px;
+      background: #00d9ff;
+      bottom: -150px;
+      left: -150px;
+      animation: float 15s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(50px, 50px) scale(1.1); }
+    }
+
+    /* Content Wrapper */
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
     }
 
     /* Navigation */
@@ -65,10 +122,26 @@
       font-size: 14px;
       letter-spacing: 0.5px;
       transition: color 0.3s ease;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
     }
 
     nav a:hover {
       color: var(--accent);
+    }
+
+    nav a:hover::after {
+      width: 100%;
     }
 
     .download-btn {
@@ -81,48 +154,165 @@
       transition: all 0.3s ease;
     }
 
+    .download-btn::after {
+      display: none;
+    }
+
     .download-btn:hover {
       background-color: var(--accent);
       border-color: var(--accent);
       color: var(--bg-dark) !important;
+      box-shadow: 0 0 20px var(--accent-glow);
     }
 
     /* Hero */
     .hero {
       max-width: 1200px;
-      margin: 80px auto 60px;
+      margin: 120px auto 80px;
       padding: 0 30px;
       display: grid;
-      grid-template-columns: 200px 1fr;
-      gap: 50px;
+      grid-template-columns: 250px 1fr;
+      gap: 60px;
       align-items: center;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+    }
+
+    .hero-img-container {
+      position: relative;
     }
 
     .hero-img {
-      width: 200px;
-      height: 200px;
+      width: 250px;
+      height: 250px;
       border-radius: 12px;
       object-fit: cover;
       border: 1px solid var(--border);
       filter: grayscale(20%);
+      transition: all 0.5s ease;
+    }
+
+    .hero-img:hover {
+      filter: grayscale(0%);
+      transform: scale(1.02);
+      box-shadow: 0 20px 60px rgba(0, 217, 255, 0.2);
+    }
+
+    .hero-img-container::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      z-index: -1;
     }
 
     .hero-content h1 {
-      font-size: 3.5rem;
+      font-size: 4rem;
       font-weight: 700;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       letter-spacing: -2px;
+      background: linear-gradient(135deg, var(--text-primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .hero-content .subtitle {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       color: var(--text-secondary);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .hero-content .description {
       color: var(--text-dim);
-      font-size: 1rem;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    /* Social Links */
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .social-link {
+      width: 45px;
+      height: 45px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px var(--accent-glow);
+    }
+
+    /* Stats Section */
+    .stats-section {
+      max-width: 1200px;
+      margin: 0 auto 80px;
+      padding: 0 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 0.2s forwards;
+    }
+
+    .stat-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px var(--accent-glow);
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     /* Main Content */
@@ -134,82 +324,159 @@
 
     section {
       margin-bottom: 100px;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease forwards;
     }
 
+    section:nth-child(1) { animation-delay: 0.1s; }
+    section:nth-child(2) { animation-delay: 0.2s; }
+    section:nth-child(3) { animation-delay: 0.3s; }
+    section:nth-child(4) { animation-delay: 0.4s; }
+    section:nth-child(5) { animation-delay: 0.5s; }
+
     h2 {
-      font-size: 1.8rem;
+      font-size: 2.2rem;
       font-weight: 600;
-      margin-bottom: 40px;
+      margin-bottom: 50px;
       letter-spacing: -1px;
+      position: relative;
+      display: inline-block;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 50%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
     }
 
     /* About */
     #about p {
-      font-size: 1.1rem;
-      line-height: 1.8;
+      font-size: 1.2rem;
+      line-height: 2;
       color: var(--text-secondary);
-      max-width: 800px;
+      max-width: 900px;
     }
 
     /* Skills */
     .skills-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 15px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
     }
 
     .skill-item {
       background-color: var(--bg-card);
       border: 1px solid var(--border);
-      padding: 20px;
-      border-radius: 8px;
+      padding: 30px 25px;
+      border-radius: 12px;
       text-align: center;
       font-weight: 500;
+      font-size: 1.05rem;
       color: var(--text-secondary);
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .skill-item:hover::before {
+      left: 100%;
     }
 
     .skill-item:hover {
       border-color: var(--accent);
       color: var(--accent);
-      transform: translateY(-2px);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px var(--accent-glow);
     }
 
     /* Projects & Certificates */
     .cards-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 25px;
     }
 
     .card {
       background-color: var(--bg-card);
       border: 1px solid var(--border);
-      padding: 30px;
+      padding: 0;
       border-radius: 12px;
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-content {
+      padding: 35px;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover::before {
+      transform: scaleX(1);
     }
 
     .card:hover {
       border-color: var(--accent-dim);
-      transform: translateY(-4px);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px var(--accent-glow);
     }
 
     .card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 12px;
+      font-size: 1.4rem;
+      margin-bottom: 15px;
       font-weight: 600;
+      color: var(--text-primary);
     }
 
     .card p {
       color: var(--text-secondary);
-      line-height: 1.7;
-      font-size: 0.95rem;
-      margin-bottom: 15px;
+      line-height: 1.8;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .card .project-link {
+      margin-top: 15px;
     }
 
     .project-link {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       color: var(--accent);
       text-decoration: none;
       font-weight: 500;
@@ -219,15 +486,39 @@
 
     .project-link:hover {
       color: var(--text-primary);
-      transform: translateX(5px);
+      gap: 12px;
+    }
+
+    .cert-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 10px 20px;
+      background-color: var(--bg-lighter);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .cert-download:hover {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px var(--accent-glow);
     }
 
     /* Contact */
     .contact-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      margin-top: 30px;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 50px;
+      margin-top: 40px;
     }
 
     .contact-info {
@@ -239,13 +530,14 @@
     .contact-item {
       background-color: var(--bg-card);
       border: 1px solid var(--border);
-      padding: 20px;
-      border-radius: 8px;
-      transition: border-color 0.3s ease;
+      padding: 25px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
     }
 
     .contact-item:hover {
       border-color: var(--accent-dim);
+      transform: translateX(5px);
     }
 
     .contact-item .label {
@@ -253,13 +545,14 @@
       font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .contact-item a {
       color: var(--text-primary);
       text-decoration: none;
-      font-size: 1rem;
+      font-size: 1.05rem;
+      transition: color 0.3s ease;
     }
 
     .contact-item a:hover {
@@ -270,44 +563,45 @@
     .contact-form {
       background-color: var(--bg-card);
       border: 1px solid var(--border);
-      padding: 35px;
+      padding: 40px;
       border-radius: 12px;
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     .form-group input,
     .form-group textarea {
       width: 100%;
-      padding: 14px;
+      padding: 16px;
       background-color: var(--bg-lighter);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       color: var(--text-primary);
       font-family: inherit;
       font-size: 15px;
-      transition: border-color 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     .form-group input:focus,
     .form-group textarea:focus {
       outline: none;
-      border-color: var(--accent-dim);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
     }
 
     .form-group textarea {
-      min-height: 120px;
+      min-height: 140px;
       resize: vertical;
     }
 
     .submit-btn {
       background-color: var(--text-primary);
       color: var(--bg-dark);
-      padding: 14px 30px;
+      padding: 16px 35px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
@@ -317,21 +611,24 @@
 
     .submit-btn:hover {
       background-color: var(--accent);
+      box-shadow: 0 10px 30px var(--accent-glow);
+      transform: translateY(-2px);
     }
 
     /* Footer */
     footer {
       border-top: 1px solid var(--border);
-      padding: 50px 30px;
+      padding: 60px 30px;
       text-align: center;
       color: var(--text-dim);
-      font-size: 0.9rem;
-      line-height: 1.8;
+      font-size: 0.95rem;
+      line-height: 2;
     }
 
     footer a {
       color: var(--text-secondary);
       text-decoration: none;
+      transition: color 0.3s ease;
     }
 
     footer a:hover {
@@ -346,8 +643,8 @@
       background-color: var(--bg-card);
       border: 1px solid var(--border);
       color: var(--text-primary);
-      width: 48px;
-      height: 48px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -356,32 +653,69 @@
       font-size: 20px;
       transition: all 0.3s ease;
       z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: all;
     }
 
     .back-to-top:hover {
       background-color: var(--accent);
       border-color: var(--accent);
       color: var(--bg-dark);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px var(--accent-glow);
     }
 
     /* Responsive */
-    @media (max-width: 768px) {
+    @media (max-width: 968px) {
       .hero {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: 30px;
+        gap: 40px;
+        margin: 80px auto 60px;
       }
 
-      .hero-img {
+      .hero-img-container {
         margin: 0 auto;
       }
 
+      .social-links {
+        justify-content: center;
+      }
+
       .hero-content h1 {
-        font-size: 2.5rem;
+        font-size: 3rem;
       }
 
       .contact-grid {
         grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .stats-section {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-content h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero-img {
+        width: 200px;
+        height: 200px;
+      }
+
+      .hero-img-container::before {
+        top: -8px;
+        left: -8px;
+        right: -8px;
+        bottom: -8px;
       }
 
       nav {
@@ -391,144 +725,236 @@
       section {
         margin-bottom: 60px;
       }
-    }
 
-    @media (max-width: 480px) {
-      .hero-content h1 {
-        font-size: 2rem;
+      h2 {
+        font-size: 1.8rem;
       }
 
       .skills-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
+      .stats-section {
+        grid-template-columns: 1fr;
+      }
+
+      .cards-container {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#certificates">Certificates</a>
-      <a href="#contact">Contact</a>
-      <a href="cv.pdf" download class="download-btn">Download CV</a>
-    </nav>
-  </header>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
 
-  <div class="hero">
-    <img src="img/my-img.jpg" alt="Eyad Alghamdi" class="hero-img">
-    <div class="hero-content">
-      <h1>Eyad Alghamdi</h1>
-      <p class="subtitle">Computer Science Student</p>
-      <p class="description">Developer & Tech Enthusiast</p>
+  <div class="content-wrapper">
+    <header>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#certificates">Certificates</a>
+        <a href="#contact">Contact</a>
+        <a href="cv.pdf" download class="download-btn">Download CV</a>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <div class="hero-img-container">
+        <img src="img/my-img.jpg" alt="Eyad Alghamdi" class="hero-img">
+      </div>
+      <div class="hero-content">
+        <h1>Eyad Alghamdi</h1>
+        <p class="subtitle">Third-Year Computer Science Student</p>
+        <p class="description">Developer & Tech Enthusiast based in Tabuk, Saudi Arabia</p>
+        <div class="social-links">
+          <a href="https://github.com/eyad-cs" target="_blank" class="social-link">
+            <span>⚡</span>
+          </a>
+          <a href="mailto:eyad.khleif.cs@gmail.com" class="social-link">
+            <span>✉</span>
+          </a>
+          <a href="#" class="social-link">
+            <span>💼</span>
+          </a>
+        </div>
+      </div>
     </div>
+
+    <div class="stats-section">
+      <div class="stat-card">
+        <div class="stat-number">2+</div>
+        <div class="stat-label">Projects</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">9+</div>
+        <div class="stat-label">Technologies</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Certificates</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">3rd</div>
+        <div class="stat-label">Year Student</div>
+      </div>
+    </div>
+
+    <main>
+      <section id="about">
+        <h2>About</h2>
+        <p>
+          Third-year Computer Science student at the University of Tabuk with a focus on building practical solutions to real-world problems. I'm passionate about web development, software engineering, and exploring emerging technologies. My approach combines technical skills with creative problem-solving to deliver impactful projects.
+        </p>
+      </section>
+
+      <section id="skills">
+        <h2>Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-item">Java</div>
+          <div class="skill-item">Python</div>
+          <div class="skill-item">HTML</div>
+          <div class="skill-item">CSS</div>
+          <div class="skill-item">JavaScript</div>
+          <div class="skill-item">Assembly</div>
+          <div class="skill-item">PHP</div>
+          <div class="skill-item">Git</div>
+          <div class="skill-item">GitHub</div>
+        </div>
+      </section>
+
+      <section id="projects">
+        <h2>Projects</h2>
+        <div class="cards-container">
+          <div class="card">
+            <div class="card-content">
+              <h3>مفقوداتي - جامعة تبوك</h3>
+              <p>
+                Lost and found platform for University of Tabuk. A web application that helps students report and find lost items on campus, streamlining the process of reuniting students with their belongings through an intuitive interface.
+              </p>
+              <a href="https://final-product.kesug.com" target="_blank" class="project-link">
+                Visit Site <span>→</span>
+              </a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-content">
+              <h3>Quiz Game</h3>
+              <p>
+                Interactive Java-based quiz application built with NetBeans IDE. Features include multiple-choice questions, real-time score tracking system, timer functionality, and an intuitive user interface designed for an engaging learning experience.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="certificates">
+        <h2>Certificates</h2>
+        <div class="cards-container">
+          <div class="card">
+            <img src="img/cert-cyber.jpg" alt="Cybersecurity Certificate" class="card-image">
+            <div class="card-content">
+              <h3>Cybersecurity Basics</h3>
+              <p>أساسيات الأمن السيبراني - Comprehensive introduction to cybersecurity fundamentals, threat detection, and security best practices.</p>
+              <a href="certificates/cybersecurity.pdf" download class="cert-download">
+                <span>Download Certificate</span>
+                <span>↓</span>
+              </a>
+            </div>
+          </div>
+          <div class="card">
+            <img src="img/cert-ai-1.jpg" alt="AI Fundamentals Certificate" class="card-image">
+            <div class="card-content">
+              <h3>Fundamentals of Artificial Intelligence</h3>
+              <p>مبادئ الذكاء الاصطناعي - Core concepts of AI including machine learning basics, neural networks, and AI applications.</p>
+              <a href="certificates/ai-fundamentals.pdf" download class="cert-download">
+                <span>Download Certificate</span>
+                <span>↓</span>
+              </a>
+            </div>
+          </div>
+          <div class="card">
+            <img src="img/cert-ai-2.jpg" alt="Advanced AI Certificate" class="card-image">
+            <div class="card-content">
+              <h3>AI Concepts & Advanced Applications</h3>
+              <p>مفاهيم الذكاء الاصطناعي وتطبيقاته المتقدمة - Advanced AI techniques, deep learning, and practical implementations.</p>
+              <a href="certificates/ai-advanced.pdf" download class="cert-download">
+                <span>Download Certificate</span>
+                <span>↓</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <h2>Contact</h2>
+        <div class="contact-grid">
+          <div class="contact-info">
+            <div class="contact-item">
+              <div class="label">Email</div>
+              <a href="mailto:eyad.khleif.cs@gmail.com">eyad.khleif.cs@gmail.com</a>
+            </div>
+            <div class="contact-item">
+              <div class="label">GitHub</div>
+              <a href="https://github.com/eyad-cs" target="_blank">github.com/eyad-cs</a>
+            </div>
+            <div class="contact-item">
+              <div class="label">LinkedIn</div>
+              <span style="color: var(--text-primary);">EYAD</span>
+            </div>
+            <div class="contact-item">
+              <div class="label">Location</div>
+              <span style="color: var(--text-primary);">Tabuk, Saudi Arabia</span>
+            </div>
+          </div>
+
+          <div class="contact-form">
+            <form action="mailto:eyad.khleif.cs@gmail.com" method="post" enctype="text/plain">
+              <div class="form-group">
+                <input type="text" name="name" placeholder="Name" required>
+              </div>
+              <div class="form-group">
+                <input type="email" name="email" placeholder="Email" required>
+              </div>
+              <div class="form-group">
+                <textarea name="message" placeholder="Message" required></textarea>
+              </div>
+              <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>Eyad T. Alkhleif</strong></p>
+      <p>University of Tabuk — Computer Science — Class of 2026</p>
+      <p><a href="mailto:eyad.khleif.cs@gmail.com">eyad.khleif.cs@gmail.com</a></p>
+      <p>Tabuk, Saudi Arabia</p>
+      <p style="margin-top: 25px; opacity: 0.7;">© 2024 Eyad Alghamdi. Built with passion.</p>
+    </footer>
+
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
   </div>
 
-  <main>
-    <section id="about">
-      <h2>About</h2>
-      <p>
-        Second-year Computer Science student at the University of Tabuk. I build applications and constantly explore new technologies. My focus areas include software development, problem-solving, and learning emerging tech stacks.
-      </p>
-    </section>
+  <script>
+    // Back to top button
+    const backToTop = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    });
 
-    <section id="skills">
-      <h2>Skills</h2>
-      <div class="skills-grid">
-        <div class="skill-item">Java</div>
-        <div class="skill-item">Python</div>
-        <div class="skill-item">HTML</div>
-        <div class="skill-item">CSS</div>
-        <div class="skill-item">JavaScript</div>
-        <div class="skill-item">Assembly</div>
-        <div class="skill-item">PHP</div>
-        <div class="skill-item">Git</div>
-        <div class="skill-item">GitHub</div>
-      </div>
-    </section>
-
-    <section id="projects">
-      <h2>Projects</h2>
-      <div class="cards-container">
-        <div class="card">
-          <h3>مفقوداتي - جامعة تبوك</h3>
-          <p>
-            Lost and found platform for University of Tabuk. A web application that helps students report and find lost items on campus, streamlining the process of reuniting students with their belongings.
-          </p>
-          <a href="https://final-product.kesug.com" target="_blank" class="project-link">Visit Site →</a>
-        </div>
-        <div class="card">
-          <h3>Quiz Game</h3>
-          <p>
-            Java-based quiz application built with NetBeans. Features include multiple-choice questions, score tracking system, and a clean user interface.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="certificates">
-      <h2>Certificates</h2>
-      <div class="cards-container">
-        <div class="card">
-          <h3>Cybersecurity Basics</h3>
-          <p>أساسيات الأمن السيبراني</p>
-        </div>
-        <div class="card">
-          <h3>Fundamentals of Artificial Intelligence</h3>
-          <p>مبادئ الذكاء الاصطناعي</p>
-        </div>
-        <div class="card">
-          <h3>AI Concepts & Advanced Applications</h3>
-          <p>مفاهيم الذكاء الاصطناعي وتطبيقاته المتقدمة</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-      <div class="contact-grid">
-        <div class="contact-info">
-          <div class="contact-item">
-            <div class="label">Email</div>
-            <a href="mailto:eyad.khleif.cs@gmail.com">eyad.khleif.cs@gmail.com</a>
-          </div>
-          <div class="contact-item">
-            <div class="label">GitHub</div>
-            <a href="https://github.com/eyad-cs" target="_blank">github.com/eyad-cs</a>
-          </div>
-          <div class="contact-item">
-            <div class="label">LinkedIn</div>
-            <span style="color: var(--text-primary);">EYAD</span>
-          </div>
-        </div>
-
-        <div class="contact-form">
-          <form action="mailto:eyad.khleif.cs@gmail.com" method="post" enctype="text/plain">
-            <div class="form-group">
-              <input type="text" name="name" placeholder="Name" required>
-            </div>
-            <div class="form-group">
-              <input type="email" name="email" placeholder="Email" required>
-            </div>
-            <div class="form-group">
-              <textarea name="message" placeholder="Message" required></textarea>
-            </div>
-            <button type="submit" class="submit-btn">Send Message</button>
-          </form>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p><strong>Eyad T. Alkhleif</strong></p>
-    <p>University of Tabuk — Class of 2027</p>
-    <p><a href="mailto:eyad.khleif.cs@gmail.com">eyad.khleif.cs@gmail.com</a></p>
-    <p>Tabuk, Saudi Arabia</p>
-    <p style="margin-top: 20px;">© 2024 Eyad Alghamdi</p>
-  </footer>
-
-  <a href="#" class="back-to-top">↑</a>
+    backToTop.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
