@@ -419,6 +419,8 @@
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .card-image {
@@ -430,6 +432,9 @@
 
     .card-content {
       padding: 35px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
     }
 
     .card::before {
@@ -466,11 +471,11 @@
       color: var(--text-secondary);
       line-height: 1.8;
       font-size: 1rem;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .card .project-link {
-      margin-top: 15px;
+      margin-top: auto;
     }
 
     .project-link {
@@ -784,7 +789,7 @@
 
     <div class="stats-section">
       <div class="stat-card">
-        <div class="stat-number">2+</div>
+        <div class="stat-number">3+</div>
         <div class="stat-label">Projects</div>
       </div>
       <div class="stat-card">
@@ -814,6 +819,8 @@
         <div class="skills-grid">
           <div class="skill-item">Java</div>
           <div class="skill-item">Python</div>
+          <div class="skill-item" style="color: var(--accent); border-color: var(--accent);">Unity</div>
+          <div class="skill-item">C#</div>
           <div class="skill-item">HTML</div>
           <div class="skill-item">CSS</div>
           <div class="skill-item">JavaScript</div>
@@ -827,6 +834,23 @@
       <section id="projects">
         <h2>Projects</h2>
         <div class="cards-container">
+          
+          <div class="card">
+            <img src="img/mask-game.jpg" alt="Mask Game" class="card-image">
+            <div class="card-content">
+              <h3>Mask Game - Global Game Jam 2026</h3>
+              <p>
+                A survival game developed in 48 hours using Unity & C#. Players must manage resources and switch masks to survive in a toxic gas environment.
+              </p>
+              <p dir="rtl" style="font-size: 0.95rem; color: var(--text-secondary); border-top: 1px solid var(--border); padding-top: 15px; margin-top: 10px;">
+                لعبة نجاة طورت في 48 ساعة خلال تحدي Game Jam. تعتمد على ميكانيكية الغاز السام وإدارة الموارد للبقاء على قيد الحياة.
+              </p>
+              <a href="#" class="project-link">
+                View Gameplay <span>→</span>
+              </a>
+            </div>
+          </div>
+
           <div class="card">
             <div class="card-content">
               <h3>مفقوداتي - جامعة تبوك</h3>
@@ -838,11 +862,12 @@
               </a>
             </div>
           </div>
+
           <div class="card">
             <div class="card-content">
               <h3>Quiz Game</h3>
               <p>
-                Interactive Java-based quiz application built with NetBeans IDE. Features include multiple-choice questions, real-time score tracking system, timer functionality, and an intuitive user interface designed for an engaging learning experience.
+                Interactive Java-based quiz application built using OOP principles. Features include multiple-choice questions, real-time score tracking system, timer functionality, and an intuitive user interface designed for an engaging learning experience.
               </p>
             </div>
           </div>
@@ -885,17 +910,19 @@
               </a>
             </div>
           </div>
-            <div class="card">
-            
+          
+          <div class="card">
+            <img src="img/cert-ai-2.jpg" alt="Database Certificate" class="card-image">
             <div class="card-content">
               <h3>مقدمة في قواعد البيانات</h3>
-              <p></p>
+              <p>Introduction to Database Management Systems, SQL queries, and data modeling fundamentals.</p>
               <a href="certificates/ai-advanced.pdf" download class="cert-download">
                 <span>Download Certificate</span>
                 <span>↓</span>
               </a>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -944,7 +971,7 @@
       <p>University of Tabuk — Computer Science — Class of 2026</p>
       <p><a href="mailto:eyad.khleif.cs@gmail.com">eyad.khleif.cs@gmail.com</a></p>
       <p>Tabuk, Saudi Arabia</p>
-      <p style="margin-top: 25px; opacity: 0.7;">© 2024 Eyad Alghamdi. Built with passion.</p>
+      <p style="margin-top: 25px; opacity: 0.7;">© 2026 Eyad Alghamdi. Built with passion.</p>
     </footer>
 
     <a href="#" class="back-to-top" id="backToTop">↑</a>
